@@ -39,9 +39,9 @@ EMAIL_PASSWORD = config('EMAIL_PASSWORD', cast=str)
 SECRET_KEY = 'django-insecure-#9an^tex%*x6h=$h8^o26*f-3l)f-ky9ql71s=g^4717yb9f+7'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOST = ['localhost', '127.0.0.1', '0.0.0.0', 'pruebaultragroup-production.up.railway.app']
+ALLOWED_HOST = ['*']
 
 
 # Application definition
@@ -57,6 +57,8 @@ INSTALLED_APPS = [
     'travel_agency_app'
 ]
 
+CORS_ORIGIN_ALLOW_ALL = True
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -67,8 +69,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
-
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 ROOT_URLCONF = 'travel_agency.urls'
 
