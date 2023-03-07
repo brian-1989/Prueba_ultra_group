@@ -1,5 +1,6 @@
-from rest_framework.views import APIView
+from rest_framework.permissions import AllowAny
 from rest_framework.request import Request
+from rest_framework.views import APIView
 from travel_agency_app.domain.hotel import (
     CreateNewHotelDomain,
     UpdateHotelDomain,
@@ -22,19 +23,14 @@ class GetAllHotelsView(APIView):
         return uc.execute()
 
 class CreateNewHotelView(APIView):
-    def get(self, request: Request):
+    permission_classes = [AllowAny]
+
+    def post(self, request: Request):
         serializer = CreateNewHotelSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         domain = CreateNewHotelDomain(**serializer.data)
         uc = CreateNewHotelUseCase()
         return uc.execute(domain=domain)
-
-    # def post(self, request: Request):
-    #     serializer = CreateNewHotelSerializer(data=request.data)
-    #     serializer.is_valid(raise_exception=True)
-    #     domain = CreateNewHotelDomain(**serializer.data)
-    #     uc = CreateNewHotelUseCase()
-    #     return uc.execute(domain=domain)
 
 class UpdateHotelView(APIView):
     def put(self, request: Request):
