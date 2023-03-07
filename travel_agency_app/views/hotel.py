@@ -1,4 +1,3 @@
-from rest_framework.permissions import AllowAny
 from rest_framework.request import Request
 from rest_framework.views import APIView
 from travel_agency_app.domain.hotel import (
@@ -23,8 +22,6 @@ class GetAllHotelsView(APIView):
         return uc.execute()
 
 class CreateNewHotelView(APIView):
-    permission_classes = [AllowAny]
-
     def post(self, request: Request):
         serializer = CreateNewHotelSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)

@@ -4,7 +4,8 @@ from rest_framework.request import Request
 from travel_agency_app.domain.booking import (
     AddBookingDomain,
     UpdateBookingDomain,
-    DeleteBookingDomain
+    DeleteBookingDomain,
+    BookingSearchDomian
 )
 from travel_agency_app.use_cases.booking import (
     GetHotelAndRoomUseCase,
@@ -15,7 +16,8 @@ from travel_agency_app.use_cases.booking import (
 from travel_agency_app.serializers.booking import (
     AddBookingSerializer,
     UpdateBookingSerializer,
-    DeleteBookingSerializer
+    DeleteBookingSerializer,
+    BookingSearchSerializer
 )
 
 class GetHotelAndRoomView(APIView):
@@ -46,3 +48,10 @@ class DeleteBookingView(APIView):
         domain = DeleteBookingDomain(**serialiazer.data)
         uc = DeletebookingUseCase()
         return uc.execute(domain=domain)
+
+class BookingSearchView(APIView):
+    def post(self, request: Request):
+        serialiazer = BookingSearchSerializer(data=request.data)
+        serialiazer.is_valid(raise_exception=True)
+        domian = BookingSearchDomian(**serialiazer.data)
+        

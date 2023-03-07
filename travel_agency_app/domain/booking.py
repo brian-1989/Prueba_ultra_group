@@ -58,3 +58,12 @@ class UpdateBookingDomain:
 class DeleteBookingDomain:
     hotel_name: str = None
     room_location: str = None
+
+@dataclasses.dataclass
+class BookingSearchDomian:
+    begin_date: str = None
+    end_date: str = None
+    hotel_name: str = None
+    room_location: str = None
+    passenger_number: int = 0
+    city_name: str = None

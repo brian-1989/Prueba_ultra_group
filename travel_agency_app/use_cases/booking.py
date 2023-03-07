@@ -4,9 +4,11 @@ from email.message import EmailMessage
 from travel_agency_app.domain.booking import (
     AddBookingDomain,
     UpdateBookingDomain,
-    DeleteBookingDomain
+    DeleteBookingDomain,
+    BookingSearchDomian
 )
 from travel_agency_app.models.booking import Booking, Passenger
+from travel_agency_app.models.city import City
 from travel_agency_app.models.hotel import Hotel
 from travel_agency_app.models.room import Room
 from travel_agency_app.responses import ApiResponse
@@ -250,6 +252,37 @@ class DeletebookingUseCase:
             message = {
                 "message": f"The booking of room {domain.room_location}, {domain.hotel_name} Hotel, has been eliminated."}
             return ApiResponse.sucess(message=message)
+        except Exception as exc:
+            error_message = {
+                "error_message": exc.args}
+            return ApiResponse.failure(error_message)
+
+class BookingSearchUseCase():
+    def excute(self, domain: BookingSearchDomian):
+        try:
+            check_city = list(City.objects.filter(city_name=domain.city_name))
+            if check_city == []:
+                error_message = {
+                    "error_message": f"The {domain.city_name} city is not registered"}
+                return ApiResponse.failure(error_message)
+            check_booking = Booking.objects.get(
+                hotel_name=domain.hotel_name, room_location=domain.room_location)
+            if list(check_booking) != []:
+                begin_date_db = datetime.strptime(check_booking.begin_date, "%d/%m/%Y").date()
+                end_date_db = datetime.strptime(check_booking.end_date, "%d/%m/%Y").date()
+                begin_date = datetime.strptime(domain.begin_date, "%d/%m/%Y").date()
+                end_date = datetime.strptime(domain.end_date, "%d/%m/%Y").date()
+                if begin_date_db == begin_date and end_date_db == end_date:
+                    error_message = {
+                        "error_message": f"Room {domain.room_location}, at the {domain.hotel_name} hotel, is not available for those dates."}
+                    return ApiResponse.failure(error_message)
+                else:
+                    message = {"message": f"Room {domain.room_location}, at the {domain.hotel_name} hotel, is available for those dates."}
+                    return ApiResponse.sucess(message=message)
+            else:
+                error_message = {
+                    "error_message": f"The booking is not registered"}
+                return ApiResponse.failure(error_message)
         except Exception as exc:
             error_message = {
                 "error_message": exc.args}

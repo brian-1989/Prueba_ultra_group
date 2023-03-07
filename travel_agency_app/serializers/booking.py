@@ -28,3 +28,11 @@ class UpdateBookingSerializer(serializers.Serializer):
 class DeleteBookingSerializer(serializers.Serializer):
     hotel_name = serializers.CharField(allow_blank=False, required=True, max_length=100)
     room_location = serializers.CharField(allow_blank=False, required=True, max_length=2)
+
+class BookingSearchSerializer(serializers.Serializer):
+    begin_date = serializers.CharField(allow_blank=False, required=True, max_length=100)
+    end_date = serializers.CharField(allow_blank=False, required=True, max_length=100)
+    hotel_name = serializers.CharField(allow_blank=False, required=True, max_length=100)
+    room_location = serializers.CharField(allow_blank=False, required=True, max_length=2)
+    passenger_number = serializers.IntegerField(required=True)
+    city_name = serializers.CharField(allow_blank=False, required=True, max_length=100)
