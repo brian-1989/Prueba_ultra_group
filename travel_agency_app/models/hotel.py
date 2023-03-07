@@ -6,4 +6,4 @@ class Hotel(models.Model):
     create_date = models.CharField(max_length=20)
     hotel_name = models.CharField(max_length=20, unique=True)
     enable = models.BooleanField()
-    city_name = models.ForeignKey(City, on_delete=models.CASCADE)
+    city_name = models.ForeignKey(City, on_delete=models.CASCADE, default="")

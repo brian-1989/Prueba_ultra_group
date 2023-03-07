@@ -45,7 +45,7 @@ class UpdateRoomUseCase:
             check_hotel = list(Hotel.objects.filter(hotel_name=domain.hotel_name))
             if check_hotel == []:
                 error_message = {
-                    "error_message": f"The {domain.hotel_name} hotel is already registered"}
+                    "error_message": f"The {domain.hotel_name} hotel is not registered"}
                 return ApiResponse.failure(error_message)
             get_hotel_id = Hotel.objects.get(hotel_name=domain.hotel_name).pk
             check_room = Room.objects.filter(
@@ -89,7 +89,7 @@ class DeleteRoomUseCase:
             check_hotel = list(Hotel.objects.filter(hotel_name=domain.hotel_name))
             if check_hotel == []:
                 error_message = {
-                    "error_message": f"The {domain.hotel_name} hotel is already registered"}
+                    "error_message": f"The {domain.hotel_name} hotel is not registered"}
                 return ApiResponse.failure(error_message)
             get_hotel_id = Hotel.objects.get(hotel_name=domain.hotel_name).pk
             check_room = Room.objects.filter(

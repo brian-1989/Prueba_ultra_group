@@ -265,18 +265,26 @@ class BookingSearchUseCase():
                 error_message = {
                     "error_message": f"The {domain.city_name} city is not registered"}
                 return ApiResponse.failure(error_message)
-            check_booking = Booking.objects.get(
-                hotel_name=domain.hotel_name, room_location=domain.room_location)
-            if list(check_booking) != []:
-                begin_date_db = datetime.strptime(check_booking.begin_date, "%d/%m/%Y").date()
-                end_date_db = datetime.strptime(check_booking.end_date, "%d/%m/%Y").date()
+            check_booking = list(Booking.objects.filter(
+                hotel_name=domain.hotel_name, room_location=domain.room_location).values(
+                'begin_date', 'end_date'))
+            if check_booking != []:
+                begin_date_db = datetime.strptime(check_booking[0].get("begin_date"), "%d/%m/%Y").date()
+                end_date_db = datetime.strptime(check_booking[0].get("end_date"), "%d/%m/%Y").date()
                 begin_date = datetime.strptime(domain.begin_date, "%d/%m/%Y").date()
                 end_date = datetime.strptime(domain.end_date, "%d/%m/%Y").date()
+                check_date = self.check_dates(begin_date, end_date)
+                if check_date and check_date.status_code == 400:
+                    return check_date
                 if begin_date_db == begin_date and end_date_db == end_date:
                     error_message = {
                         "error_message": f"Room {domain.room_location}, at the {domain.hotel_name} hotel, is not available for those dates."}
                     return ApiResponse.failure(error_message)
-                else:
+                elif begin_date < end_date_db:
+                    error_message = {
+                        "error_message": f"Room {domain.room_location}, at the {domain.hotel_name} hotel, is not available for those dates."}
+                    return ApiResponse.failure(error_message)
+                elif begin_date > end_date_db:
                     message = {"message": f"Room {domain.room_location}, at the {domain.hotel_name} hotel, is available for those dates."}
                     return ApiResponse.sucess(message=message)
             else:
@@ -287,3 +295,20 @@ class BookingSearchUseCase():
             error_message = {
                 "error_message": exc.args}
             return ApiResponse.failure(error_message)
+
+    def check_dates(self, begin_date, end_date):
+        today_date = datetime.now(tz=pytz.timezone('America/Bogota')).date()
+        if begin_date < today_date:
+            error_message = {
+                "error_message": f"The {begin_date} date is invalid"}
+            return ApiResponse.failure(error_message)
+        elif end_date < today_date:
+            error_message = {
+                "error_message": f"The {end_date} date is invalid"}
+            return ApiResponse.failure(error_message)
+        elif begin_date > end_date:
+            error_message = {
+                "error_message": f"The {begin_date} and {end_date} dates is invalid"}
+            return ApiResponse.failure(error_message)
+        else:
+            return

@@ -7,7 +7,8 @@ from travel_agency_app.domain.hotel import (
 )
 from travel_agency_app.serializers.hotel import (
     CreateNewHotelSerializer,
-    UpdateHotelSerializer
+    UpdateHotelSerializer,
+    DeleteHotelSerializer
 )
 from travel_agency_app.use_cases.hotel import (
     GetAllHotelsUseCase,
@@ -39,7 +40,7 @@ class UpdateHotelView(APIView):
 
 class DeleteHotelView(APIView):
     def delete(self, request: Request):
-        serializer = CreateNewHotelSerializer(data=request.data)
+        serializer = DeleteHotelSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         domain = DeleteHotelDomain(**serializer.data)
         uc = DeleteHotelUseCase()
