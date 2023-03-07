@@ -12,7 +12,7 @@ class GetAllCitiesUseCase:
     def execute(self):
         try:
             get_all_cities = City.objects.all().values("city_name")
-            response = dict(hotels = list(get_all_cities))
+            response = dict(cities = list(get_all_cities))
             return ApiResponse.sucess(message=response)
         except Exception as exc:
             error_message = {
