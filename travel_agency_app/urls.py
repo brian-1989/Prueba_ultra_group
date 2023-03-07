@@ -3,7 +3,8 @@ from travel_agency_app.views.booking import (
     GetHotelAndRoomView,
     AddBookingView,
     UpdateBookingView,
-    DeleteBookingView
+    DeleteBookingView,
+    BookingSearchView
 )
 from travel_agency_app.views.city import (
     GetAllCitiesView,
@@ -56,4 +57,5 @@ urlpatterns += [
     path('add_booking/', AddBookingView.as_view(), ),
     path('update_booking/', UpdateBookingView.as_view(), ),
     path('delete_booking/', DeleteBookingView.as_view(), ),
+    path('booking_search/', BookingSearchView.as_view(), ),
 ]
