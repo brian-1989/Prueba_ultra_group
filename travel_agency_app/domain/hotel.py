@@ -3,6 +3,7 @@ import dataclasses
 @dataclasses.dataclass
 class CreateNewHotelDomain:
     create_date: str = None
+    city_name: str = None
     hotel_name: str = None
     enable: bool = True
 

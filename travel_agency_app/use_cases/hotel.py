@@ -5,6 +5,7 @@ from travel_agency_app.domain.hotel import (
     DeleteHotelDomain
 )
 from travel_agency_app.responses import ApiResponse
+from travel_agency_app.models.city import City
 from travel_agency_app.models.hotel import Hotel
 import pytz
 
@@ -22,11 +23,18 @@ class GetAllHotelsUseCase:
 class CreateNewHotelUseCase:
     def execute(self, domain: CreateNewHotelDomain):
         try:
+            check_city = City.objects.filter(city_name=domain.city_name)
+            if list(check_city) == []:
+                error_message = {
+                    "error_message": f"The {domain.hotel_name} is not registered"}
+                return ApiResponse.failure(error_message)
             check_hotel = Hotel.objects.filter(hotel_name=domain.hotel_name)
             if list(check_hotel) != []:
                 error_message = {
                     "error_message": f"The {domain.hotel_name} hotel is already registered"}
                 return ApiResponse.failure(error_message)
+            get_city_instance = City.objects.get(city_name=domain.city_name)
+            domain.city_name = get_city_instance
             domain.create_date = datetime.now(
                 tz=pytz.timezone('America/Bogota')).strftime("%m/%d/%Y, %H:%M:%S")
             hotel_store = Hotel(**domain.__dict__)

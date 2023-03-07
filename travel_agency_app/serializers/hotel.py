@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 class CreateNewHotelSerializer(serializers.Serializer):
+    city_name = serializers.CharField(allow_blank=False, required=True, max_length=100)
     hotel_name = serializers.CharField(allow_blank=False, required=True, max_length=100)
 
 class UpdateHotelSerializer(serializers.Serializer):
