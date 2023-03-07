@@ -39,9 +39,11 @@ EMAIL_PASSWORD = config('EMAIL_PASSWORD', cast=str)
 SECRET_KEY = 'django-insecure-#9an^tex%*x6h=$h8^o26*f-3l)f-ky9ql71s=g^4717yb9f+7'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOST = ['localhost', '127.0.0.1', '0.0.0.0', 'pruebaultragroup-production.up.railway.app']
+
+print(ALLOWED_HOST)
 
 
 # Application definition
