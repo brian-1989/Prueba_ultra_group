@@ -1,1 +1,1 @@
-web: gunicorn travel_agency.wsgi --log-file -
+web: python manage.py migrate && gunicorn travel_agency.wsgi --log-file -
