@@ -23,15 +23,18 @@ class GetAllHotelsView(APIView):
 
 class CreateNewHotelView(APIView):
     def get(self, request: Request):
-        uc = GetAllHotelsUseCase()
-        return uc.execute()
-
-    def post(self, request: Request):
         serializer = CreateNewHotelSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         domain = CreateNewHotelDomain(**serializer.data)
         uc = CreateNewHotelUseCase()
         return uc.execute(domain=domain)
+
+    # def post(self, request: Request):
+    #     serializer = CreateNewHotelSerializer(data=request.data)
+    #     serializer.is_valid(raise_exception=True)
+    #     domain = CreateNewHotelDomain(**serializer.data)
+    #     uc = CreateNewHotelUseCase()
+    #     return uc.execute(domain=domain)
 
 class UpdateHotelView(APIView):
     def put(self, request: Request):
