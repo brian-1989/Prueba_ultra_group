@@ -66,6 +66,10 @@ class UpdateRoomUseCase:
                 get_room.room_location = domain.value
             elif domain.field == "enable":
                 get_room.enable = domain.value
+            elif domain.field == "booking":
+                print('hellooooooooooooooooooo')
+                print(domain.value)
+                get_room.booking = domain.value
             else:
                 error_message = {
                     "error_message": f"The {domain.field} field to update does not exist"}

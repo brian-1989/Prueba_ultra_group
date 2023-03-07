@@ -94,7 +94,7 @@ class AddBookingUseCase:
             check_hotel = Hotel.objects.filter(hotel_name=domain.hotel_name)
             if list(check_hotel) == []:
                 error_message = {
-                    "error_message": f"The {domain.hotel_name} hotel to update does not exist"}
+                    "error_message": f"The {domain.hotel_name} hotel does not exist"}
                 return ApiResponse.failure(error_message)
             get_hotel_id = Hotel.objects.get(hotel_name=domain.hotel_name).pk
             check_room = Room.objects.filter(
@@ -234,7 +234,6 @@ class DeletebookingUseCase:
                 error_message = {
                     "error_message": f"The {domain.hotel_name} hotel is not registered"}
                 return ApiResponse.failure(error_message)
-            get_hotel_id = Hotel.objects.get(hotel_name=domain.hotel_name).pk
             check_booking = Booking.objects.filter(
                 hotel_name=domain.hotel_name, room_location=domain.room_location)
             if list(check_booking) == []:
@@ -243,6 +242,11 @@ class DeletebookingUseCase:
                 return ApiResponse.failure(error_message)
             Booking.objects.get(
                 hotel_name=domain.hotel_name, room_location=domain.room_location).delete()
+            get_hotel_id = Hotel.objects.get(hotel_name=domain.hotel_name).pk
+            get_room = Room.objects.get(
+                hotel_name=get_hotel_id, room_location=domain.room_location)
+            get_room.booking = False
+            get_room.save()
             message = {
                 "message": f"The booking of room {domain.room_location}, {domain.hotel_name} Hotel, has been eliminated."}
             return ApiResponse.sucess(message=message)
