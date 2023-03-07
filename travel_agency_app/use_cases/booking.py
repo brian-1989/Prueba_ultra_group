@@ -280,7 +280,7 @@ class BookingSearchUseCase():
                     error_message = {
                         "error_message": f"Room {domain.room_location}, at the {domain.hotel_name} hotel, is not available for those dates."}
                     return ApiResponse.failure(error_message)
-                elif begin_date < end_date_db:
+                elif begin_date <= end_date_db:
                     error_message = {
                         "error_message": f"Room {domain.room_location}, at the {domain.hotel_name} hotel, is not available for those dates."}
                     return ApiResponse.failure(error_message)
