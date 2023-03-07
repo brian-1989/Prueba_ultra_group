@@ -11,7 +11,8 @@ from travel_agency_app.use_cases.booking import (
     GetHotelAndRoomUseCase,
     AddBookingUseCase,
     UpdateBookingUseCase,
-    DeletebookingUseCase
+    DeletebookingUseCase,
+    BookingSearchUseCase
 )
 from travel_agency_app.serializers.booking import (
     AddBookingSerializer,
@@ -54,4 +55,5 @@ class BookingSearchView(APIView):
         serialiazer = BookingSearchSerializer(data=request.data)
         serialiazer.is_valid(raise_exception=True)
         domian = BookingSearchDomian(**serialiazer.data)
-        
+        uc = BookingSearchUseCase()
+        return uc.excute(domain=domian)
