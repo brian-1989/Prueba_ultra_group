@@ -22,6 +22,9 @@ class GetAllHotelsView(APIView):
         return uc.execute()
 
 class CreateNewHotelView(APIView):
+    def get(self, request: Request):
+        return
+
     def post(self, request: Request):
         serializer = CreateNewHotelSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
